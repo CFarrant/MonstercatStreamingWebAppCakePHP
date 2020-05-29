@@ -1,31 +1,4 @@
-<?php
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link      https://cakephp.org CakePHP(tm) Project
- * @since     0.10.0
- * @license   https://opensource.org/licenses/mit-license.php MIT License
- * @var \App\View\AppView $this
- */
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
-use Cake\Http\Exception\NotFoundException;
-
-$this->disableAutoLayout();
-
-$cakeDescription = 'CakePHP: the rapid development PHP framework';
-?>
-
-<!DOCTYPE mpeg>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -39,57 +12,101 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
 
 <body>
   <style>
+    .sticky {
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
     body {
       background-color: black;
       color: white;
       font-family: 'Montserrat', sans-serif;
     }
-    footer {
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      width: 100%;
+    .wrapper {
+      display: grid;
+      grid-gap: 30px;
+      grid-auto-flow: row;
+      grid-template-columns: auto;
     }
-    .songbox{
-      width: 100%; 
-      margin-top: 10%;
-      margin-bottom: 10%;
+    body .wrapper {
+      margin-top: 5%;
+      margin-left: 5%;
+      margin-right: 5%;
+      margin-bottom: 2.5%
+    }
+    .songbox {
+      margin-top: 5%;
+      margin-left: 35%;
+      margin-right: 35%;
       text-align: center;
       vertical-align: middle;
     }
     .song{
       display: inline-block; 
       margin: 0 auto;
-      padding: 3px;
+    }
+    .box {
+      height: auto;
+      border-radius: 5px;
+      padding: 10px;
+      margin-left: 10%;
+      margin-right: 10%;
+      font-size: 100%;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+    }
+    .box a{
+      text-decoration: none;
+    }
+    .box:hover {
+      background-color: grey;
+      text-decoration: none;
+      color: white;
+    }
+    .box a:hover {
+      text-decoration: none;
+      color: white;
     }
   </style>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky">
     <a class="navbar-brand">Monstercat Catalog Project</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" href="../monstercatstreaming">Home</a>
-        <a class="nav-link" href="../monstercatstreaming/songs/random">Random</a>
-        <a class="nav-link" href="../monstercatstreaming/albums/catalog">Catalog</a>
-        <a class="nav-link disabled">Album</a>
+        <a class="nav-link" href="../">Home</a>
+        <a class="nav-link" href="../songs/random">Random</a>
+        <a class="nav-link" href="../albums/catalog">Catalog</a>
+        <a class="nav-link active">Album</a>
         <a class="nav-link disabled">Song</a>
       </div>
     </div>
   </nav>
-  <div class=songbox>
+  <div class="songbox">
     <div class="song">
-      <span>
-        <div style="margin-bottom: 5px;">
-          <img style="width: 275px; height: 275px;" src='img/logo.png'>
-        </div>
+      <div>
+        <?php echo "<img style='width: 400px; height: 400px;' src='$album->cover_url'>" ?>
+      </div>
+      <br/>
+      <div>
+        <?php echo "<h1>$album->name</h1>" ?>
+        <?php echo "<h3>$album->artist_name</h3>" ?>
+        <?php echo "<h5>$album->genre_primary, $album->genre_secondary</h5>" ?>
+      </div>
+    </div>    
+  </div>
+  <div style="margin-top: 20px; margin-bottom: 20px;">
+    <?php foreach ($songs as $song): ?>
+    <?php echo "<a href='../songs/song?id=$song->track_id'>" ?>
+      <div class="box">
         <div>
-          <h1>Welcome to the Monstercat Catalog Project!</h1>
-          <h3>By: Christopher Farrant</h3>
+          <?php echo "<h3>$song->track_number) $song->title ~ $song->artist_name</h3>" ?>
         </div>
-      </span>
-    </div>
+      </div>
+    </a>
+    <?php endforeach ?>
   </div>
 </body>
 

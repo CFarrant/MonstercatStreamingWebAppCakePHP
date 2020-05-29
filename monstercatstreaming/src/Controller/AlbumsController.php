@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use Cake\ORM\TableRegistry;
+use Cake\Event\Event;
+
 /**
  * Albums Controller
  *
@@ -21,6 +24,21 @@ class AlbumsController extends AppController
         $albums = $this->paginate($this->Albums);
 
         $this->set(compact('albums'));
+    }
+
+    public function catalog() {
+        $this->viewBuilder()->disableAutoLayout();
+        $albums = $this->Albums->find('all');
+        $this->set(compact('albums'));
+    }
+
+    public function album() {
+        $this->viewBuilder()->disableAutoLayout();
+        $album = $this->Albums->find('all', ['limit' => 1])->where(['album_id' => $_GET['id']])->firstOrFail();
+        $songstable = TableRegistry::getTableLocator()->get('Songs');
+        $songs = $songstable->find('all')->where(['album_id' => $_GET['id']]);
+        $this->set(compact('album'));
+        $this->set(compact('songs'));
     }
 
     /**

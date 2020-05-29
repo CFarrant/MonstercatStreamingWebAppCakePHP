@@ -1,31 +1,4 @@
-<?php
-/**
- * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
- *
- * @copyright Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
- * @link      https://cakephp.org CakePHP(tm) Project
- * @since     0.10.0
- * @license   https://opensource.org/licenses/mit-license.php MIT License
- * @var \App\View\AppView $this
- */
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Core\Plugin;
-use Cake\Datasource\ConnectionManager;
-use Cake\Error\Debugger;
-use Cake\Http\Exception\NotFoundException;
-
-$this->disableAutoLayout();
-
-$cakeDescription = 'CakePHP: the rapid development PHP framework';
-?>
-
-<!DOCTYPE mpeg>
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -35,6 +8,7 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../css/audioplayer.css">
 </head>
 
 <body>
@@ -51,9 +25,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
       width: 100%;
     }
     .songbox{
-      width: 100%; 
-      margin-top: 10%;
-      margin-bottom: 10%;
+      margin-bottom: 4.1%;
+      margin-top: 4.1%;
+      width: 100%;
       text-align: center;
       vertical-align: middle;
     }
@@ -70,9 +44,9 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-link active" href="../monstercatstreaming">Home</a>
-        <a class="nav-link" href="../monstercatstreaming/songs/random">Random</a>
-        <a class="nav-link" href="../monstercatstreaming/albums/catalog">Catalog</a>
+        <a class="nav-link" href="../">Home</a>
+        <a class="nav-link active" href="../songs/random">Random</a>
+        <a class="nav-link" href="../albums/catalog">Catalog</a>
         <a class="nav-link disabled">Album</a>
         <a class="nav-link disabled">Song</a>
       </div>
@@ -82,15 +56,33 @@ $cakeDescription = 'CakePHP: the rapid development PHP framework';
     <div class="song">
       <span>
         <div style="margin-bottom: 5px;">
-          <img style="width: 275px; height: 275px;" src='img/logo.png'>
+          <?php echo "<img style='width: 550px; height: 550px;' src='$album->cover_url'>"; ?>
         </div>
+        <br/>
         <div>
-          <h1>Welcome to the Monstercat Catalog Project!</h1>
-          <h3>By: Christopher Farrant</h3>
+          <?php echo "<h1>$song->artist_name ~ $song->title</h1>";?>
+          <br />
+          <?php echo "<h3> $song->genre_primary, $song->genre_secondary</h3>";?>
         </div>
       </span>
     </div>
   </div>
 </body>
+
+<footer>
+  <div class="footer">
+    </div>
+    <div id="wrapper">
+      <?php echo "<audio preload='auto' src='$song->url?i.mp3' type='audio/mpeg' controls autoplay loop></audio>"; ?>
+    </div>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/audioplayer.js"></script>
+    <script>
+      $( function()
+      {
+        $( 'audio' ).audioPlayer();
+      });
+    </script>
+</footer>
 
 </html>

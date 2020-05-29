@@ -26,8 +26,20 @@ class SongsController extends AppController
         $this->set(compact('songs'));
     }
 
-    public function randomSong() {
-        
+    public function random() {
+        $this->viewBuilder()->disableAutoLayout();
+        $song = $this->Songs->find('all', ['order' => 'random()', 'limit' => 1])->contain('Albums')->firstOrFail();
+        $album = $song->album;
+        $this->set(compact('song'));
+        $this->set(compact('album'));
+    }
+
+    public function song() {
+        $this->viewBuilder()->disableAutoLayout();
+        $song = $this->Songs->find('all', ['limit' => 1])->where(['track_id' => $_GET['id']])->contain('Albums')->firstOrFail();
+        $album = $song->album;
+        $this->set(compact('song'));
+        $this->set(compact('album'));
     }
 
     /**
